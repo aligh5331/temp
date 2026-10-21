@@ -1,0 +1,21 @@
+name: relay-probe
+
+on:
+  schedule:
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node probe/run-node.mjs
+        env:
+          BALE_BOT_TOKEN: ${{ secrets.BALE_BOT_TOKEN }}
+          INBOX_CHAT_ID: ${{ secrets.INBOX_CHAT_ID }}
+          PROBE_HOST: github
